@@ -31,7 +31,7 @@ const Login = () => {
     setLoading(false);
     if (success) {
       message.success('Welcome back!');
-      navigate('/owner-approvals');
+      navigate('/dashboard');
     } else {
       message.error('Invalid credentials or not an admin');
     }

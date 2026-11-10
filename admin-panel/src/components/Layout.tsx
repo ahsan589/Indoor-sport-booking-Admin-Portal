@@ -22,7 +22,8 @@ const AdminLayout: React.FC = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const menuItems = [
-          { key: '/profile', icon: <FaUser />, label: 'Dashboard' },
+          { key: '/dashboard', icon: <FaChartBar />, label: 'Dashboard' },
+    { key: '/profile', icon: <FaUser />, label: 'Court Locator' },
     { key: '/owner-approvals', icon: <FaCheckCircle />, label: 'Owner Approvals' },
     { key: '/user-management', icon: <FaUsers />, label: 'User Management' },
     { key: '/complaints', icon: <FaExclamationTriangle />, label: 'Complaints' },
@@ -49,13 +50,14 @@ const AdminLayout: React.FC = () => {
         .admin-layout {
           display: flex;
           min-height: 100vh;
-          background-color: #f5f5f5;
+          background-color: #f6f7fb;
           overflow: visible;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .sidebar {
-          width: 250px;
-          background-color: #0f172a;
+          width: 254px;
+          background: linear-gradient(180deg, #0f172a 0%, #1a1f4d 100%);
           color: white;
           transition: all 0.3s ease;
           position: fixed;
@@ -64,65 +66,104 @@ const AdminLayout: React.FC = () => {
           height: 100vh;
           z-index: 100;
           flex-shrink: 0;
+          display: flex;
+          flex-direction: column;
         }
 
         .sidebar.collapsed {
-          width: 60px;
+          width: 66px;
         }
 
         .sidebar-header {
-          padding: 20px;
+          padding: 20px 16px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-header h2 {
           margin: 0;
-          font-size: 18px;
+          font-size: 17px;
           white-space: nowrap;
           overflow: hidden;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .sidebar-logo {
+          width: 34px; height: 34px;
+          flex-shrink: 0;
+          border-radius: 10px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 16px;
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+          box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
         }
 
         .sidebar-toggle {
-          background: none;
+          background: rgba(255,255,255,0.08);
           border: none;
-          color: white;
+          color: rgba(255,255,255,0.7);
           cursor: pointer;
-          font-size: 16px;
-          padding: 5px;
+          font-size: 13px;
+          padding: 6px 8px;
+          border-radius: 6px;
+          transition: all 0.2s;
+        }
+
+        .sidebar-toggle:hover {
+          background: rgba(255,255,255,0.15);
+          color: white;
+        }
+
+        .sidebar-nav {
+          flex: 1;
+          overflow-y: auto;
+          overflow-x: hidden;
         }
 
         .sidebar-nav ul {
           list-style: none;
-          padding: 0;
+          padding: 12px 10px;
           margin: 0;
         }
 
         .sidebar-nav li {
-          padding: 15px 20px;
+          padding: 11px 14px;
+          margin-bottom: 4px;
           cursor: pointer;
           display: flex;
           align-items: center;
           transition: all 0.2s;
-          border-left: 4px solid transparent;
+          border-radius: 10px;
+          color: rgba(255,255,255,0.65);
+          font-size: 14px;
+          font-weight: 500;
         }
 
         .sidebar-nav li:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(255, 255, 255, 0.08);
+          color: white;
         }
 
         .sidebar-nav li.active {
-          background-color: rgba(255, 255, 255, 0.15);
-          border-left-color: #4F46E5;
+          background: linear-gradient(135deg, rgba(79,70,229,0.9), rgba(124,58,237,0.8));
+          color: white;
+          box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
         }
 
         .menu-icon {
-          font-size: 18px;
-          margin-right: 15px;
+          font-size: 17px;
+          margin-right: 14px;
           min-width: 20px;
           text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .menu-label {
@@ -134,37 +175,52 @@ const AdminLayout: React.FC = () => {
           display: none;
         }
 
+        .sidebar.collapsed .menu-icon {
+          margin-right: 0;
+        }
+
+        .sidebar-footer {
+          padding: 16px;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          font-size: 11px;
+          color: rgba(255,255,255,0.4);
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
         .main-content {
           flex: 1;
           display: flex;
           flex-direction: column;
           min-width: 0;
           padding-top: 64px; /* height of the fixed header */
-          margin-left: 250px;
+          margin-left: 254px;
           box-sizing: border-box;
         }
 
         .admin-layout.sidebar-collapsed .main-content {
-          margin-left: 60px;
+          margin-left: 66px;
         }
 
         .admin-header {
-          background-color: white;
-          padding: 0 20px;
+          background: rgba(255,255,255,0.85);
+          backdrop-filter: blur(10px);
+          padding: 0 24px;
           height: 64px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(15,23,42,0.06);
           position: fixed;
           top: 0;
-          left: 250px;
+          left: 254px;
           right: 0;
           z-index: 1001;
         }
 
         .admin-header.collapsed {
-          left: 60px;
+          left: 66px;
         }
 
         .header-left {
@@ -183,8 +239,16 @@ const AdminLayout: React.FC = () => {
 
         .admin-header h1 {
           margin: 0;
-          font-size: 20px;
+          font-size: 19px;
+          font-weight: 700;
           color: #0f172a;
+        }
+
+        .header-date {
+          font-size: 12px;
+          color: #94a3b8;
+          margin-left: 12px;
+          font-weight: 400;
         }
 
         .user-menu {
@@ -194,14 +258,20 @@ const AdminLayout: React.FC = () => {
         .user-avatar {
           width: 40px;
           height: 40px;
-          border-radius: 50%;
-          background-color: #e0e0e0;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          font-size: 18px;
-          color: #0f172a;
+          font-size: 17px;
+          color: white;
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+          box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
+          transition: transform 0.2s;
+        }
+
+        .user-avatar:hover {
+          transform: scale(1.06);
         }
 
         .user-dropdown {
@@ -209,22 +279,27 @@ const AdminLayout: React.FC = () => {
           top: 50px;
           right: 0;
           background-color: white;
-          border-radius: 4px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-          min-width: 150px;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
+          min-width: 160px;
           z-index: 1000;
+          overflow: hidden;
+          border: 1px solid #f1f5f9;
         }
 
         .dropdown-item {
-          padding: 12px 15px;
+          padding: 12px 16px;
           display: flex;
           align-items: center;
           cursor: pointer;
           transition: background-color 0.2s;
+          font-size: 14px;
+          color: #334155;
         }
 
         .dropdown-item:hover {
-          background-color: #f5f5f5;
+          background-color: #f8fafc;
+          color: #4f46e5;
         }
 
         .dropdown-icon {
@@ -233,7 +308,7 @@ const AdminLayout: React.FC = () => {
 
         .content-area {
           flex: 1;
-          padding: 20px;
+          padding: 24px;
           overflow-y: auto;
           width: 100%;
           box-sizing: border-box;
@@ -289,7 +364,7 @@ const AdminLayout: React.FC = () => {
       <div className={`admin-layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <div className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
           <div className="sidebar-header">
-            <h2>Admin Panel</h2>
+            <h2><span className="sidebar-logo"><FaCheckCircle /></span>{!sidebarCollapsed && 'PlaySpot Admin'}</h2>
             <button className="sidebar-toggle" onClick={toggleSidebar}>
               {sidebarCollapsed ? <FaArrowRight /> : <FaArrowLeft />}
             </button>
@@ -308,6 +383,7 @@ const AdminLayout: React.FC = () => {
               ))}
             </ul>
           </nav>
+          <div className="sidebar-footer">{!sidebarCollapsed && '© Indoor Sports Hub'}</div>
         </div>
         
         <div className="main-content">
@@ -316,7 +392,7 @@ const AdminLayout: React.FC = () => {
               <button className="mobile-sidebar-toggle" onClick={toggleSidebar}>
                 <FaBars />
               </button>
-              <h1>Dashboard</h1>
+              <h1>Dashboard<span className="header-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span></h1>
             </div>
             
             <div className="user-menu">

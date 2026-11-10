@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import OwnerApprovals from './pages/OwnerApprovals';
 import UserManagement from './pages/UserManagement';
@@ -28,13 +29,15 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="owner-approvals" element={<OwnerApprovals />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="complaints" element={<Complaints />} />
           <Route path="monitor-bookings" element={<MonitorBookings />} />
           <Route path="reports" element={<Reports />} />
-          <Route path="*" element={<Navigate to="/profile" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </Router>
