@@ -806,6 +806,12 @@ const Reports: React.FC = () => {
 
   const exportItems: MenuProps['items'] = [
     {
+      key: 'json',
+      label: 'JSON (.json)',
+      icon: <FileTextOutlined />,
+      onClick: handleExportJSON
+    },
+    {
       key: 'excel',
       label: 'Excel (.xlsx)',
       icon: <FileExcelOutlined />,

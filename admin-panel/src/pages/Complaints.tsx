@@ -29,7 +29,6 @@ import {
   SearchOutlined,
   ReloadOutlined,
   EyeOutlined,
-  FireOutlined,
   SafetyCertificateOutlined,
   CrownOutlined
 } from '@ant-design/icons';
