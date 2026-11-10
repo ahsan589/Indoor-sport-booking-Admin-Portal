@@ -1,238 +1,343 @@
-import { Form, Input, Button, Typography, message, Card, Divider, Row, Col } from 'antd';
-import { UserOutlined, LockOutlined, LoginOutlined, TeamOutlined, DashboardOutlined, SecurityScanOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Typography, message } from 'antd';
+import {
+  UserOutlined,
+  LockOutlined,
+  DashboardOutlined,
+  TeamOutlined,
+  SafetyCertificateOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  LoadingOutlined,
+  RocketOutlined,
+  TrophyOutlined,
+  CalendarOutlined
+} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { type CSSProperties, useState } from 'react';
+import { useState } from 'react';
 
 const { Title, Text } = Typography;
 
 const Login = () => {
   const { login } = useUser();
   const navigate = useNavigate();
-  const [isHovered, setIsHovered] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: { email: string; password: string }) => {
+    setLoading(true);
+    // Small delay so the loading state is visible
+    await new Promise(resolve => setTimeout(resolve, 600));
     const success = await login(values.email, values.password);
+    setLoading(false);
     if (success) {
-      message.success('Login successful!');
+      message.success('Welcome back!');
       navigate('/owner-approvals');
     } else {
       message.error('Invalid credentials or not an admin');
     }
   };
 
-  // Inline styles
-  const styles: { [key: string]: CSSProperties } = {
-    loginContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #283593 50%, #303f9f 100%)',
-      position: 'relative',
-      padding: '5%'
-    },
-    loginBackground: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      opacity: 0.1,
-      backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.2\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E")'
-    },
-    loginBackgroundOverlay: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0, 0, 0, 0.2)'
-    },
-    contentWrapper: {
-      width: '100%',
-      zIndex: 1
-    },
-    featureCard: {
-      background: 'rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      borderRadius: '12px',
-      padding: '5%',
-      height: '100%',
-      color: 'white'
-    },
-    featureIcon: {
-      fontSize: '32px',
-      marginBottom: '16px',
-      color: '#ffd54f'
-    },
-    loginCard: {
-      width: '100%',
-      borderRadius: '12px',
-      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
-      zIndex: 1
-    },
-    loginHeader: {
-      textAlign: 'center',
-      marginBottom: '10px'
-    },
-    loginIcon: {
-      fontSize: '48px',
-      color: '#1890ff',
-      marginBottom: '16px'
-    },
-    loginAlert: {
-      marginBottom: '24px',
-      borderRadius: '8px'
-    },
-    loginForm: {
-      marginTop: '20px'
-    },
-    loginFormButton: {
-      height: '45px',
-      borderRadius: '6px',
-      fontWeight: 600,
-      background: isHovered 
-        ? 'linear-gradient(135deg, #4F46E5 0%, #5d56eaff 100%)' 
-        : 'linear-gradient(135deg, #4F46E5 0%, #5d55eaff 100%)',
-      border: 'none',
-      transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
-      boxShadow: isHovered ? '0 4px 12px #4d46cfff' : 'none',
-      transition: 'all 0.3s ease'
-    },
-    loginFooter: {
-      textAlign: 'center',
-      marginTop: '10px'
-    }
-  };
-
   return (
-    <div style={styles.loginContainer}>
-      <div style={styles.loginBackground}>
-        <div style={styles.loginBackgroundOverlay}></div>
-      </div>
-      
-      <div style={styles.contentWrapper}>
-        <Row gutter={[24, 24]} align="middle">
-          <Col xs={24} sm={24} md={12} lg={12}>
-            <div style={{ padding: '5%', color: 'white' }}>
-              <Title level={1} style={{ color: 'white', marginBottom: '5%', fontSize: 'clamp(24px, 5vw, 36px)' }}>
-                Indoor Sports Hub
-              </Title>
-              <Title level={3} style={{ color: 'rgba(255, 255, 255, 0.85)', marginBottom: '8%', fontSize: 'clamp(16px, 3vw, 24px)' }}>
-                Admin Management Portal
-              </Title>
-              
-              <Row gutter={[16, 16]} style={{ marginBottom: '10%' }}>
-                <Col xs={24} sm={8} md={24} lg={8}>
-                  <div style={styles.featureCard}>
-                    <DashboardOutlined style={styles.featureIcon} />
-                    <Title level={4} style={{ color: 'white', fontSize: 'clamp(14px, 2vw, 18px)' }}>Dashboard</Title>
-                    <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 'clamp(12px, 1.5vw, 14px)' }}>
-                      Manage facilities, bookings, and user accounts from a centralized dashboard.
-                    </Text>
-                  </div>
-                </Col>
-                <Col xs={24} sm={8} md={24} lg={8}>
-                  <div style={styles.featureCard}>
-                    <TeamOutlined style={styles.featureIcon} />
-                    <Title level={4} style={{ color: 'white', fontSize: 'clamp(14px, 2vw, 18px)' }}>User Management</Title>
-                    <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 'clamp(12px, 1.5vw, 14px)' }}>
-                      Oversight of all players, facility owners, and staff members in the system.
-                    </Text>
-                  </div>
-                </Col>
-                <Col xs={24} sm={8} md={24} lg={8}>
-                  <div style={styles.featureCard}>
-                    <SecurityScanOutlined style={styles.featureIcon} />
-                    <Title level={4} style={{ color: 'white', fontSize: 'clamp(14px, 2vw, 18px)' }}>Admin Controls</Title>
-                    <Text style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: 'clamp(12px, 1.5vw, 14px)' }}>
-                      Advanced controls for system configuration, reporting, and analytics.
-                    </Text>
-                  </div>
-                </Col>
-              </Row>
-              
-              <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '4%', borderRadius: '8px' }}>
-                <Text style={{ color: 'white', fontSize: 'clamp(12px, 1.5vw, 14px)' }}>
-                  <strong>Note:</strong> This portal is restricted to authorized administrators only. 
-                  Unauthorized access attempts may be logged and investigated.
-                </Text>
+    <>
+      <style>{`
+        .lp-root {
+          min-height: 100vh;
+          min-height: 100dvh;
+          display: flex;
+          overflow-x: hidden;
+          width: 100%;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        /* ===== Left brand panel ===== */
+        .lp-brand {
+          flex: 1 1 55%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 48px 64px;
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(150deg, #0f172a 0%, #1e2a78 55%, #4338ca 100%);
+          color: #fff;
+        }
+        .lp-brand::before {
+          content: '';
+          position: absolute;
+          width: 420px; height: 420px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(99,102,241,0.35), transparent 70%);
+          top: -120px; right: -80px;
+        }
+        .lp-brand::after {
+          content: '';
+          position: absolute;
+          width: 320px; height: 320px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(56,189,248,0.25), transparent 70%);
+          bottom: -100px; left: -60px;
+        }
+        .lp-brand-inner { position: relative; z-index: 1; max-width: 560px; }
+        .lp-badge {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 999px;
+          padding: 6px 14px;
+          font-size: 13px; font-weight: 500;
+          margin-bottom: 24px;
+          backdrop-filter: blur(6px);
+        }
+        .lp-title {
+          color: #fff !important;
+          font-weight: 700 !important;
+          margin: 0 0 12px !important;
+          line-height: 1.15 !important;
+        }
+        .lp-subtitle {
+          color: rgba(255,255,255,0.75) !important;
+          margin: 0 0 40px !important;
+          line-height: 1.6 !important;
+          max-width: 460px;
+        }
+        .lp-features { display: grid; gap: 16px; margin-bottom: 36px; }
+        .lp-feature {
+          display: flex; align-items: flex-start; gap: 14px;
+          background: rgba(255,255,255,0.07);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 14px;
+          padding: 16px 18px;
+          backdrop-filter: blur(8px);
+          transition: transform 0.25s ease, background 0.25s ease;
+        }
+        .lp-feature:hover { transform: translateX(4px); background: rgba(255,255,255,0.12); }
+        .lp-feature-icon {
+          flex-shrink: 0;
+          width: 42px; height: 42px;
+          display: flex; align-items: center; justify-content: center;
+          border-radius: 10px;
+          font-size: 20px;
+          background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(56,189,248,0.4));
+          border: 1px solid rgba(255,255,255,0.15);
+        }
+        .lp-feature h4 { color: #fff; margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+        .lp-feature p { color: rgba(255,255,255,0.65); margin: 0; font-size: 13px; line-height: 1.5; }
+        .lp-note {
+          display: flex; gap: 10px; align-items: flex-start;
+          font-size: 12.5px; color: rgba(255,255,255,0.55);
+          border-top: 1px solid rgba(255,255,255,0.12);
+          padding-top: 20px;
+        }
+        /* ===== Right form panel ===== */
+        .lp-form-panel {
+          flex: 1 1 45%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 40px 24px;
+          background: #f8fafc;
+          position: relative;
+        }
+        .lp-card {
+          width: 100%;
+          max-width: 400px;
+          box-sizing: border-box;
+          background: #fff;
+          border-radius: 20px;
+          padding: 40px 36px;
+          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+        }
+        .lp-logo {
+          width: 56px; height: 56px;
+          margin: 0 auto 18px;
+          border-radius: 16px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 26px; color: #fff;
+          background: linear-gradient(135deg, #4f46e5, #7c3aed);
+          box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+        }
+        .lp-card-title { text-align: center; color: #0f172a !important; margin: 0 0 6px !important; }
+        .lp-card-sub { text-align: center; display: block; margin-bottom: 28px; }
+        .lp-input.ant-input-affix-wrapper,
+        .lp-input .ant-input {
+          border-radius: 10px !important;
+        }
+        .lp-input.ant-input-affix-wrapper {
+          padding: 10px 14px;
+          border-color: #e2e8f0;
+          transition: all 0.2s ease;
+        }
+        .lp-input.ant-input-affix-wrapper:hover { border-color: #94a3b8; }
+        .lp-btn {
+          height: 46px !important;
+          border-radius: 10px !important;
+          font-weight: 600 !important;
+          font-size: 15px;
+          border: none !important;
+          background: linear-gradient(135deg, #4f46e5, #6d28d9) !important;
+          box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+          transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .lp-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45); opacity: 0.95; }
+        .lp-btn:active { transform: translateY(0); }
+        .lp-footer { text-align: center; margin-top: 24px; }
+        .lp-demo {
+          margin-top: 16px;
+          background: #eef2ff;
+          border: 1px dashed #c7d2fe;
+          border-radius: 10px;
+          padding: 10px 14px;
+          font-size: 12.5px;
+          color: #4338ca;
+          text-align: center;
+        }
+        .lp-copyright { margin-top: 24px; font-size: 12px; color: #94a3b8; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 991px) {
+          .lp-root { flex-direction: column-reverse; }
+          .lp-brand { padding: 40px 28px; flex-basis: auto; }
+          .lp-form-panel { flex-basis: auto; min-height: 100vh; min-height: 100dvh; }
+          .lp-brand-inner { max-width: 100%; }
+        }
+        @media (max-width: 575px) {
+          .lp-brand { padding: 32px 20px; }
+          .lp-form-panel { padding: 32px 16px; }
+          .lp-card { padding: 32px 20px; border-radius: 16px; max-width: calc(100vw - 24px); }
+          .lp-features { gap: 12px; }
+          .lp-feature { padding: 14px; }
+          .lp-feature p { display: none; }
+          .lp-note { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lp-feature, .lp-btn { transition: none; }
+        }
+      `}</style>
+
+      <div className="lp-root">
+        {/* ===== Brand panel ===== */}
+        <div className="lp-brand">
+          <div className="lp-brand-inner">
+            <span className="lp-badge">
+              <RocketOutlined /> PlaySpot Admin Portal
+            </span>
+            <Title level={1} className="lp-title" style={{ fontSize: 'clamp(28px, 4vw, 44px)' }}>
+              Indoor Sports Hub
+            </Title>
+            <Text className="lp-subtitle" style={{ fontSize: 'clamp(14px, 1.6vw, 16px)' }}>
+              The central command center for managing venues, bookings, users and
+              payments — all in one secure place.
+            </Text>
+
+            <div className="lp-features">
+              <div className="lp-feature">
+                <div className="lp-feature-icon"><DashboardOutlined /></div>
+                <div>
+                  <h4>Smart Dashboard</h4>
+                  <p>Real-time overview of facilities, bookings and revenue at a glance.</p>
+                </div>
+              </div>
+              <div className="lp-feature">
+                <div className="lp-feature-icon"><TeamOutlined /></div>
+                <div>
+                  <h4>User Management</h4>
+                  <p>Oversee players, facility owners and staff from one unified panel.</p>
+                </div>
+              </div>
+              <div className="lp-feature">
+                <div className="lp-feature-icon"><SafetyCertificateOutlined /></div>
+                <div>
+                  <h4>Admin Controls</h4>
+                  <p>Approvals, reports, analytics and full system configuration.</p>
+                </div>
               </div>
             </div>
-          </Col>
-          
-          <Col xs={24} sm={24} md={12} lg={12}>
-            <Card style={styles.loginCard}>
-              <div style={styles.loginHeader}>
-                <div style={styles.loginIcon}>
-                  <LoginOutlined />
-                </div>
-                <Title level={2} style={{ color: '#0f172a', marginBottom: '8px', fontSize: 'clamp(18px, 4vw, 24px)' }}>Admin Portal</Title>
-                <Text type="secondary" style={{ fontSize: 'clamp(12px, 1.5vw, 14px)' }}>Indoor Sports Management System</Text>
-              </div>
-              
-              <Divider />
-              <Form
-                name="login"
-                onFinish={onFinish}
-                layout="vertical"
-                style={styles.loginForm}
-                size="large"
+
+            <div className="lp-note">
+              <TrophyOutlined style={{ fontSize: 16, marginTop: 2 }} />
+              <span>
+                Restricted area — authorized administrators only. Unauthorized access
+                attempts may be logged and investigated.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== Form panel ===== */}
+        <div className="lp-form-panel">
+          <div className="lp-card">
+            <div className="lp-logo"><CalendarOutlined /></div>
+            <Title level={3} className="lp-title lp-card-title" style={{ fontSize: 24 }}>
+              Welcome back
+            </Title>
+            <Text type="secondary" className="lp-card-sub">
+              Sign in to your admin account to continue
+            </Text>
+
+            <Form
+              name="login"
+              onFinish={onFinish}
+              layout="vertical"
+              requiredMark={false}
+              size="large"
+            >
+              <Form.Item
+                label={<span style={{ fontWeight: 500 }}>Email</span>}
+                name="email"
+                rules={[
+                  { required: true, message: 'Please input your email!' },
+                  { type: 'email', message: 'Please enter a valid email!' }
+                ]}
               >
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Please input your email!' },
-                    { type: 'email', message: 'Please enter a valid email!' }
-                  ]}
+                <Input
+                  className="lp-input"
+                  prefix={<UserOutlined style={{ color: '#94a3b8' }} />}
+                  placeholder="admin@example.com"
+                  autoComplete="email"
+                />
+              </Form.Item>
+
+              <Form.Item
+                label={<span style={{ fontWeight: 500 }}>Password</span>}
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+              >
+                <Input.Password
+                  className="lp-input"
+                  prefix={<LockOutlined style={{ color: '#94a3b8' }} />}
+                  placeholder="Enter your password"
+                  iconRender={visible => (visible ? <EyeOutlined /> : <EyeInvisibleOutlined />)}
+                  autoComplete="current-password"
+                />
+              </Form.Item>
+
+              <Form.Item style={{ marginBottom: 8 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="lp-btn"
+                  block
+                  disabled={loading}
+                  icon={loading ? <LoadingOutlined /> : undefined}
                 >
-                  <Input
-                    prefix={<UserOutlined style={{ color: '#888', marginRight: '8px' }} />}
-                    placeholder="admin@example.com"
-                    style={{ borderRadius: '6px', padding: '8px 11px' }}
-                  />
-                </Form.Item>
-                
-                <Form.Item
-                  label="Password"
-                  name="password"
-                  rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                  <Input.Password
-                    prefix={<LockOutlined style={{ color: '#888', marginRight: '8px' }} />}
-                    placeholder="Password"
-                    style={{ borderRadius: '6px', padding: '8px 11px' }}
-                  />
-                </Form.Item>
-                
-                <Form.Item>
-                  <Button 
-                    type="primary" 
-                    htmlType="submit" 
-                    style={styles.loginFormButton} 
-                    block
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    Sign In
-                  </Button>
-                </Form.Item>
-              </Form>
-              <Divider />
-              
-              <div style={styles.loginFooter}>
-                <Text type="secondary" style={{ fontSize: 'clamp(12px, 1.5vw, 14px)' }}>
-                  © {new Date().getFullYear()} Indoor Sports Hub. All rights reserved.
-                </Text>
-              </div>
-            </Card>
-          </Col>
-        </Row>
+                  {loading ? 'Signing in…' : 'Sign In'}
+                </Button>
+              </Form.Item>
+            </Form>
+
+            <div className="lp-demo">
+              <strong>Demo credentials:</strong> admin@example.com / password
+            </div>
+
+            <div className="lp-footer">
+              <Text type="secondary" style={{ fontSize: 13 }}>
+                © {new Date().getFullYear()} Indoor Sports Hub. All rights reserved.
+              </Text>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
